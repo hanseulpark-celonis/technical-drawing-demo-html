@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PO Creation - Vendor Selection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #f9fafb 100%);
+            color: #1a202c;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 40px;
+            border-bottom: 3px solid #2563eb;
+            padding-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-content h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .header-subtitle {
+            font-size: 0.95rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .vendor-selector {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+        }
+
+        .vendor-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        .vendor-dropdown {
+            min-width: 280px;
+            padding: 12px 16px;
+            border: 2px solid #2563eb;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            background: white;
+            color: #1a202c;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .vendor-dropdown:hover {
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .vendor-dropdown:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title::before {
+            content: '';
+            display: block;
+            width: 4px;
+            height: 24px;
+            background: #2563eb;
+            border-radius: 2px;
+        }
+
+        .material-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .info-block {
+            border-left: 3px solid #e2e8f0;
+            padding-left: 16px;
+        }
+
+        .info-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #94a3b8;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .info-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1a202c;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .detail-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 16px;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+
+        .detail-card:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .detail-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #64748b;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .detail-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .risk-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+        .risk-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 6px;
+            border-left: 4px solid #10b981;
+        }
+
+        .risk-item.medium {
+            border-left-color: #f59e0b;
+        }
+
+        .risk-item.medium-high {
+            border-left-color: #f59e0b;
+        }
+
+        .risk-item.high {
+            border-left-color: #ef4444;
+        }
+
+        .risk-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #475569;
+        }
+
+        .risk-badge {
+            background: #ecfdf5;
+            color: #065f46;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .risk-badge.medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .risk-badge.medium-high {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .risk-badge.high {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .risk-badge.metric {
+            background: #f0f9ff;
+            color: #1e40af;
+            border-left: none;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .summary-item {
+            background: #f0f9ff;
+            border-left: 4px solid #2563eb;
+            padding: 16px;
+            border-radius: 4px;
+        }
+
+        .summary-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #64748b;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .summary-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1e40af;
+        }
+
+        .next-section {
+            background: #f0f9ff;
+            border-left: 4px solid #2563eb;
+            padding: 20px;
+            border-radius: 6px;
+        }
+
+        .next-section h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #0f172a;
+        }
+
+        .next-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .next-section li {
+            padding: 8px 0 8px 24px;
+            position: relative;
+            color: #475569;
+            font-size: 0.95rem;
+        }
+
+        .next-section li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .btn-secondary:hover {
+            background: #f8fafc;
+            border-color: #94a3b8;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 24px 16px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header-content h1 {
+                font-size: 1.5rem;
+            }
+
+            .vendor-selector {
+                align-items: flex-start;
+                width: 100%;
+            }
+
+            .vendor-dropdown {
+                min-width: 100%;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .details-grid,
+            .risk-grid,
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                min-width: unset;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header with Vendor Selector -->
+        <div class="header">
+            <div class="header-content">
+                <h1>Confirm: Create & Send PO</h1>
+                <p class="header-subtitle">Please select a vendor and review procurement details.</p>
+            </div>
+            <div class="vendor-selector">
+                <label class="vendor-label">Select Vendor</label>
+                <select class="vendor-dropdown" id="vendorSelect" onchange="updateVendorData()">
+                    <option value="Cooper-Standard">Cooper-Standard</option>
+                    <option value="Renishaw">Renishaw</option>
+                    <option value="Schaeffler">Schaeffler</option>
+                    <option value="Voestalpine">Voestalpine</option>
+                    <option value="Rexroth">Rexroth</option>
+                    <option value="Linamar">Linamar</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Material Information -->
+        <div class="section">
+            <div class="material-info">
+                <div class="info-block">
+                    <div class="info-label">Material</div>
+                    <div class="info-value">99182736</div>
+                </div>
+                <div class="info-block">
+                    <div class="info-label">Material Description</div>
+                    <div class="info-value">Shaft Journal, Feed Drive, Ø38h7, L=185mm</div>
+                </div>
+                <div class="info-block">
+                    <div class="info-label">Customer</div>
+                    <div class="info-value">Veltmann GmbH</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Details -->
+        <div class="section">
+            <div class="section-title">Order Details</div>
+            <div class="details-grid">
+                <div class="detail-card">
+                    <div class="detail-label">Vendor</div>
+                    <div class="detail-value" id="vendorId">VND-050021</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Cost</div>
+                    <div class="detail-value" id="cost">169 €</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Quantity</div>
+                    <div class="detail-value" id="quantity">60 Units/year</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Total Annual Cost</div>
+                    <div class="detail-value" id="totalAnnualCost">10140 €</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Lead Time</div>
+                    <div class="detail-value" id="leadTime">8 Days</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Delivery</div>
+                    <div class="detail-value" id="delivery">Quarterly</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Risk Assessment -->
+        <div class="section">
+            <div class="section-title">Risk Assessment</div>
+            <div class="risk-grid">
+                <div class="risk-item" id="qualityRiskItem">
+                    <div class="risk-label">Quality Risk</div>
+                    <div class="risk-badge" id="qualityRisk">Medium-High</div>
+                </div>
+                <div class="risk-item" id="leadTimeRiskItem">
+                    <div class="risk-label">Lead Time Risk</div>
+                    <div class="risk-badge" id="leadTimeRisk">Medium-High</div>
+                </div>
+                <div class="risk-item" id="defectRateItem">
+                    <div class="risk-label">Average Defect Rate</div>
+                    <div class="risk-badge" id="defectRate">2.1 %</div>
+                </div>
+                <div class="risk-item" id="onTimeDeliveryItem">
+                    <div class="risk-label">On-Time Delivery Rate</div>
+                    <div class="risk-badge" id="onTimeDelivery">88 %</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Commercial Terms -->
+        <div class="section">
+            <div class="section-title">Commercial Terms</div>
+            <div class="details-grid">
+                <div class="detail-card">
+                    <div class="detail-label">Payment Term</div>
+                    <div class="detail-value" id="paymentTerm">Net 45</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Price Valid Until</div>
+                    <div class="detail-value" id="priceValid">2026-10-07</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Min. Order Quantity</div>
+                    <div class="detail-value" id="minOrder">10 Units</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- What Happens Next -->
+        <div class="section">
+            <div class="next-section">
+                <h3>What happens next</h3>
+                <ul>
+                    <li>Procurement request will be sent to the vendor.</li>
+                    <li>Vendor will be notified of material specification & lead time requirement.</li>
+                    <li>Purchase order (PO) will be generated for tracking.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="section" style="text-align: center;">
+            <div class="actions">
+                <button class="btn btn-primary">Confirm & Send PO to the Supplier</button>
+                <button class="btn btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const vendorData = {
+            'Cooper-Standard': {
+                vendorId: 'VND-050021',
+                cost: '169 €',
+                quantity: '60 Units/year',
+                totalAnnualCost: '10140 €',
+                leadTime: '8 Days',
+                delivery: 'Quarterly',
+                qualityRisk: 'Medium-High',
+                leadTimeRisk: 'Medium-High',
+                defectRate: '2.1 %',
+                onTimeDelivery: '88 %',
+                paymentTerm: 'Net 45',
+                minOrder: '10 Units'
+            },
+            'Renishaw': {
+                vendorId: 'VND-100234',
+                cost: '171 €',
+                quantity: '60 Units/year',
+                totalAnnualCost: '10260 €',
+                leadTime: '7 Days',
+                delivery: 'Quarterly',
+                qualityRisk: 'Medium',
+                leadTimeRisk: 'Medium',
+                defectRate: '1.5 %',
+                onTimeDelivery: '94 %',
+                paymentTerm: 'Net 30',
+                minOrder: '5 Units'
+            },
+            'Schaeffler': {
+                vendorId: 'VND-100891',
+                cost: '183 €',
+                quantity: '60 Units/year',
+                totalAnnualCost: '10980 €',
+                leadTime: '5 Days',
+                delivery: 'Quarterly',
+                qualityRisk: 'Low',
+                leadTimeRisk: 'Low',
+                defectRate: '0.8 %',
+                onTimeDelivery: '98 %',
+                paymentTerm: 'Net 30',
+                minOrder: '5 Units'
+            },
+            'Voestalpine': {
+                vendorId: 'VND-200112',
+                cost: '169 €',
+                quantity: '60 Units/year',
+                totalAnnualCost: '10140 €',
+                leadTime: '7 Days',
+                delivery: 'Quarterly',
+                qualityRisk: 'Medium-High',
+                leadTimeRisk: 'Medium',
+                defectRate: '2.5 %',
+                onTimeDelivery: '85 %',
+                paymentTerm: 'Net 45',
+                minOrder: '10 Units'
+            },
+            'Rexroth': {
+                vendorId: 'VND-252803',
+                cost: '169 €',
+                quantity: '60 Units/year',
+                totalAnnualCost: '10140 €',
+                leadTime: '7 Days',
+                delivery: 'Quarterly',
+                qualityRisk: 'Medium',
+                leadTimeRisk: 'Medium',
+                defectRate: '1.2 %',
+                onTimeDelivery: '96 %',
+                paymentTerm: 'Net 30',
+                minOrder: '5 Units'
+            },
+            'Linamar': {
+                vendorId: 'VND-302237',
+                cost: '175 €',
+                quantity: '60 Units/year',
+                totalAnnualCost: '10500 €',
+                leadTime: '7 Days',
+                delivery: 'Quarterly',
+                qualityRisk: 'Medium',
+                leadTimeRisk: 'Medium',
+                defectRate: '1.8 %',
+                onTimeDelivery: '92 %',
+                paymentTerm: 'Net 30',
+                minOrder: '5 Units'
+            }
+        };
+
+        function getRiskClass(risk) {
+            if (risk.includes('Medium-High')) return 'medium-high';
+            if (risk.includes('High')) return 'high';
+            if (risk.includes('Medium')) return 'medium';
+            return 'low';
+        }
+
+        function updateVendorData() {
+            const selectedVendor = document.getElementById('vendorSelect').value;
+            const data = vendorData[selectedVendor];
+
+            // Update basic fields
+            document.getElementById('vendorId').textContent = selectedVendor;
+            document.getElementById('cost').textContent = data.cost;
+            document.getElementById('quantity').textContent = data.quantity;
+            document.getElementById('totalAnnualCost').textContent = data.totalAnnualCost;
+            document.getElementById('leadTime').textContent = data.leadTime;
+            document.getElementById('delivery').textContent = data.delivery;
+            document.getElementById('paymentTerm').textContent = data.paymentTerm;
+            document.getElementById('minOrder').textContent = data.minOrder;
+            document.getElementById('priceValid').textContent = '2026-10-07';
+
+            // Update risk items with proper classes
+            const updateRiskItem = (elementId, value, riskElementId, isMetric = false) => {
+                const element = document.getElementById(riskElementId);
+                element.textContent = value;
+
+                if (isMetric) {
+                    element.className = `risk-badge metric`;
+                    document.getElementById(elementId).className = `risk-item`;
+                } else {
+                    const riskClass = getRiskClass(value);
+                    element.className = `risk-badge ${riskClass}`;
+                    document.getElementById(elementId).className = `risk-item ${riskClass}`;
+                }
+            };
+
+            updateRiskItem('qualityRiskItem', data.qualityRisk, 'qualityRisk', false);
+            updateRiskItem('leadTimeRiskItem', data.leadTimeRisk, 'leadTimeRisk', false);
+            updateRiskItem('defectRateItem', data.defectRate, 'defectRate', true);
+            updateRiskItem('onTimeDeliveryItem', data.onTimeDelivery, 'onTimeDelivery', true);
+        }
+
+        // Initialize with default vendor
+        updateVendorData();
+    </script>
+</body>
+</html>
