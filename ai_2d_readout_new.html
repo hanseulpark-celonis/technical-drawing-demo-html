@@ -1,0 +1,39 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>AI Summary</title>
+<style>  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {    background: transparent;    margin: 0;    padding: 0;    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;    -webkit-font-smoothing: antialiased;    text-rendering: optimizeLegibility;  }
+  .ai-card {    position: relative;    width: 100%;    padding: 20px 48px 22px 80px;    border-radius: 0;    overflow: hidden;    color: #2B3242;    background: linear-gradient(135deg, #F5F7FA 0%, #EDF0F5 48%, #F5F7FA 100%);    box-shadow:      0 10px 26px -14px rgba(30, 40, 70, 0.18),      0 2px 8px -3px rgba(0, 0, 0, 0.08),      inset 0 1px 0 rgba(255, 255, 255, 0.6);    border: 1px solid rgba(120, 130, 160, 0.20);  }
+  .ai-card::before {    content: "";    position: absolute;    top: -160px;    right: -120px;    width: 520px;    height: 520px;    background: radial-gradient(circle at center,      rgba(91, 107, 214, 0.10) 0%,      rgba(91, 107, 214, 0.04) 38%,      rgba(91, 107, 214, 0) 70%);    pointer-events: none;  }
+  .ai-card::after {    content: "";    position: absolute;    bottom: -180px;    left: -140px;    width: 460px;    height: 460px;    background: radial-gradient(circle at center,      rgba(74, 144, 217, 0.06) 0%,      rgba(74, 144, 217, 0) 68%);    pointer-events: none;  }
+  .ai-card > * { position: relative; z-index: 1; }
+  .ai-header {    display: flex;    align-items: center;    gap: 14px;    margin-bottom: 12px;  }
+  .title-accent {    flex: 0 0 auto;    width: 5px;    height: 32px;    border-radius: 999px;    background: linear-gradient(180deg, #6E7DE0 0%, #4C5BC0 100%);    box-shadow: 0 0 9px -2px rgba(91, 107, 214, 0.55);  }
+  .ai-title {    font-size: 35px;    font-weight: 800;    letter-spacing: 0.3px;    margin: 0;    color: #1E2536;  }
+  .generated-badge {    margin-left: auto;    display: inline-flex;    align-items: center;    gap: 8px;    padding: 7px 15px;    font-size: 13px;    font-weight: 600;    letter-spacing: 0.4px;    text-transform: uppercase;    color: #1F8A5C;    border-radius: 999px;    background: rgba(31, 138, 92, 0.08);    border: 1px solid rgba(31, 138, 92, 0.30);  }
+  .generated-badge .dot {    width: 8px;    height: 8px;    border-radius: 50%;    background: #2FAE73;    box-shadow: 0 0 5px 1px rgba(47, 174, 115, 0.6);    animation: livePulse 1.8s ease-in-out infinite;  }
+  @keyframes livePulse {    0%, 100% { opacity: 1;   transform: scale(1);   }    50%      { opacity: 0.4; transform: scale(0.75); }  }
+  .ai-intro {    font-size: 25px;    line-height: 1.5;    color: #4B5468;    margin: 0 0 13px;    max-width: 1300px;  }
+  .mat {    font-weight: 700;    color: #1E2536;    white-space: nowrap;  }
+  .score-pill {    display: inline-block;    padding: 3px 13px;    margin: 0 1px;    font-weight: 700;    font-size: 20px;    color: #FFFFFF;    border-radius: 999px;    white-space: nowrap;    background: linear-gradient(90deg, #5B6BD6 0%, #4C5BC0 100%);    box-shadow: 0 0 8px -1px rgba(91, 107, 214, 0.35);  }
+  .diff-grid {    display: flex;    gap: 16px;    margin-bottom: 16px;  }
+  .diff-row {    flex: 1;    display: block;    padding: 13px 18px;    border-radius: 0;    background: rgba(255, 255, 255, 0.65);    border: 1px solid rgba(120, 130, 160, 0.16);    border-left-width: 5px;  }
+  .diff-row.accent-1 { border-left-color: #D9598C; }
+  .diff-row.accent-2 { border-left-color: #C99A2E; }
+  .diff-row.accent-3 { border-left-color: #4A90D9; }
+  .diff-text {    display: block;    font-size: 20px;    line-height: 1.45;    color: #4B5468;  }
+  .diff-label {    display: block;    font-size: 20px;    font-weight: 700;    letter-spacing: 0.5px;    text-transform: uppercase;    color: #8890A2;    margin-bottom: 3px;  }
+  .diff-text b { color: #1E2536; font-weight: 700; }
+  .insight-box {    display: block;    padding: 14px 18px;    border-radius: 0;    background: rgba(255, 255, 255, 0.55);    border: 1px solid rgba(120, 130, 160, 0.16);    border-left-width: 5px;    border-left-color: #5B6BD6;  }
+  .insight-text { display: block; font-size: 20px; line-height: 1.5; color: #4B5468; }
+  .insight-text b { color: #1E2536; font-weight: 700; }</style></head><body>
+  <div class="ai-card">
+    <div class="ai-header">      <span class="title-accent"></span>      <b class="ai-title">AI Summary</b>      <span class="generated-badge"><span class="dot"></span>AI Generated</span>    </div>
+    <p class="ai-intro">      The AI matched new part <span class="mat">99182736</span> to existing material <span class="mat">10025866</span> with a      <span class="score-pill">88.7%</span> similarity score.    </p>
+    <div class="diff-grid">
+      <div class="diff-row accent-1">        <span class="diff-text">          <span class="diff-label">Geometry</span>          Significantly longer (<b>185 mm</b> vs. <b>49 mm</b>) and thicker (<b>Ø38 mm</b> vs. <b>Ø25 mm</b>)        </span>      </div>
+      <div class="diff-row accent-2">        <span class="diff-text">          <span class="diff-label">Drill Holes</span>          <b>2 drill holes</b> added (vs. <b>0</b> on the reference part)        </span>      </div>
+      <div class="diff-row accent-3">        <span class="diff-text">          <span class="diff-label">Threads</span>          Fewer threads (<b>4</b> vs. <b>8</b>)        </span>      </div>
+    </div>
+    <div class="insight-box">      <span class="insight-text">Because the core geometry and manufacturing process are close enough, existing <b>cost, routing and machine data</b> from <b>10025866</b> can be reused as a reliable starting point — instead of starting the estimation from scratch.</span>    </div>
+  </div>
+</body></html>
