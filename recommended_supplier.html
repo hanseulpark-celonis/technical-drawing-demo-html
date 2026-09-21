@@ -6,9 +6,8 @@
   .ai-card::before {    content: "";    position: absolute;    top: -160px;    right: -120px;    width: 520px;    height: 520px;    background: radial-gradient(circle at center,      rgba(91, 107, 214, 0.10) 0%,      rgba(91, 107, 214, 0.04) 38%,      rgba(91, 107, 214, 0) 70%);    pointer-events: none;  }
   .ai-card::after {    content: "";    position: absolute;    bottom: -180px;    left: -140px;    width: 460px;    height: 460px;    background: radial-gradient(circle at center,      rgba(74, 144, 217, 0.06) 0%,      rgba(74, 144, 217, 0) 68%);    pointer-events: none;  }
   .ai-card > * { position: relative; z-index: 1; }
-  .ai-header {    display: flex;    align-items: center;    gap: 16px;    margin-bottom: 14px;  }
-  .sparkle {    font-size: 32px;    line-height: 1;    filter: drop-shadow(0 0 4px rgba(91, 107, 214, 0.35));    animation: sparklePulse 2.4s ease-in-out infinite;    transform-origin: center;  }
-  @keyframes sparklePulse {    0%, 100% { transform: scale(1) rotate(0deg);   opacity: 0.9; }    50%      { transform: scale(1.18) rotate(8deg); opacity: 1;   }  }
+  .ai-header {    display: flex;    align-items: center;    gap: 14px;    margin-bottom: 14px;  }
+  .title-accent {    flex: 0 0 auto;    width: 5px;    height: 32px;    border-radius: 999px;    background: linear-gradient(180deg, #6E7DE0 0%, #4C5BC0 100%);    box-shadow: 0 0 9px -2px rgba(91, 107, 214, 0.55);  }
   .ai-title {    font-size: 35px;    font-weight: 800;    letter-spacing: 0.3px;    margin: 0;    color: #1E2536;  }
   .generated-badge {    margin-left: auto;    display: inline-flex;    align-items: center;    gap: 8px;    padding: 8px 16px;    font-size: 14px;    font-weight: 600;    letter-spacing: 0.4px;    text-transform: uppercase;    color: #1F8A5C;    border-radius: 999px;    background: rgba(31, 138, 92, 0.08);    border: 1px solid rgba(31, 138, 92, 0.30);    white-space: nowrap;  }
   .generated-badge .dot {    width: 8px;    height: 8px;    border-radius: 50%;    background: #2FAE73;    box-shadow: 0 0 5px 1px rgba(47, 174, 115, 0.6);    animation: livePulse 1.8s ease-in-out infinite;  }
@@ -16,30 +15,27 @@
   .ai-intro {    font-size: 25px;    line-height: 1.5;    color: #4B5468;    margin: 0 0 14px;    max-width: 1300px;  }
   .mat {    font-weight: 700;    color: #1E2536;    white-space: nowrap;  }
   .score-pill {    display: inline-flex;    align-items: center;    padding: 4px 14px;    margin: 0 1px;    font-weight: 700;    font-size: 20px;    color: #FFFFFF;    border-radius: 999px;    white-space: nowrap;    background: linear-gradient(90deg, #5B6BD6 0%, #4C5BC0 100%);    box-shadow:      0 0 8px -1px rgba(91, 107, 214, 0.35),      inset 0 1px 0 rgba(255, 255, 255, 0.20);  }
-  .score-pill .chev {    margin-right: 4px;    letter-spacing: -2px;    opacity: 0.9;  }
   .steps-note { color: #7A8296; }
   .diff-grid {    display: flex;    gap: 16px;    margin-bottom: 12px;  }
-  .diff-row {    flex: 1;    display: flex;    align-items: flex-start;    gap: 12px;    padding: 13px 16px;    border-radius: 0;    background: rgba(255, 255, 255, 0.65);    border: 1px solid rgba(120, 130, 160, 0.16);    border-left-width: 4px;  }
+  .diff-row {    flex: 1;    display: block;    padding: 13px 18px;    border-radius: 0;    background: rgba(255, 255, 255, 0.65);    border: 1px solid rgba(120, 130, 160, 0.16);    border-left-width: 5px;  }
   .diff-row.accent-1 { border-left-color: #D9598C; }  .diff-row.accent-2 { border-left-color: #C99A2E; }  .diff-row.accent-3 { border-left-color: #4A90D9; }  .diff-row.accent-4 { border-left-color: #7B6FD6; }
-  .diff-icon {    flex: 0 0 auto;    width: 44px;    height: 44px;    display: flex;    align-items: center;    justify-content: center;    font-size: 32px;    line-height: 1;    background: transparent;  }
-  .diff-text {    font-size: 20px;    line-height: 1.45;    color: #4B5468;    padding-top: 3px;  }
+  .diff-text {    display: block;    font-size: 20px;    line-height: 1.45;    color: #4B5468;  }
   .diff-label {    display: block;    font-size: 20px;    font-weight: 700;    letter-spacing: 0.5px;    text-transform: uppercase;    color: #8890A2;    margin-bottom: 3px;  }
   .diff-text b { color: #1E2536; font-weight: 700; }
-  .alt-row {    display: flex;    align-items: flex-start;    gap: 12px;    padding: 13px 16px;    border-radius: 0;    background: rgba(255, 255, 255, 0.55);    border: 1px solid rgba(120, 130, 160, 0.16);    border-left-width: 4px;    border-left-color: #7B6FD6;  }
-  .alt-icon {    flex: 0 0 auto;    width: 44px;    height: 44px;    display: flex;    align-items: center;    justify-content: center;    font-size: 32px;    line-height: 1;    background: transparent;  }
-  .alt-text {    font-size: 20px;    line-height: 1.45;    color: #4B5468;    padding-top: 3px;  }
+  .alt-row {    display: block;    padding: 13px 18px;    border-radius: 0;    background: rgba(255, 255, 255, 0.55);    border: 1px solid rgba(120, 130, 160, 0.16);    border-left-width: 5px;    border-left-color: #7B6FD6;  }
+  .alt-text {    display: block;    font-size: 20px;    line-height: 1.45;    color: #4B5468;  }
   .alt-label {    display: block;    font-size: 20px;    font-weight: 700;    letter-spacing: 0.5px;    text-transform: uppercase;    color: #8890A2;    margin-bottom: 3px;  }
   .alt-text b { color: #1E2536; font-weight: 700; }</style></head><body>
   <div class="ai-card">
-    <div class="ai-header">      <span class="sparkle">✨</span>      <b class="ai-title">Recommended Supplier</b>      <span class="generated-badge"><span class="dot"></span>AI Generated</span>    </div>
+    <div class="ai-header">      <span class="title-accent"></span>    <b class="ai-title">Recommended Supplier</b>      <span class="generated-badge"><span class="dot"></span>AI Generated</span>    </div>
 
-    <p class="ai-intro">      The AI recommends      <span class="score-pill"><span class="chev">▶▶</span>Schaeffler</span>      as the best supplier for this part —      the strongest profile across all <span class="mat">6 vendors</span>      <span class="steps-note">(fastest lead time, highest OTIF rate, top overall score)</span>:    </p>
+    <p class="ai-intro">      The AI recommends      <span class="score-pill">Schaeffler</span>      as the best supplier for this part —      the strongest profile across all <span class="mat">6 vendors</span>      <span class="steps-note">(fastest lead time, highest OTIF rate, top overall score)</span>:    </p>
     <div class="diff-grid">
-      <div class="diff-row accent-1">        <span class="diff-icon">💶</span>        <span class="diff-text">          <span class="diff-label">Cost per Vendor</span>          <b>€173</b> — competitive across all 6 vendors        </span>      </div>
-      <div class="diff-row accent-2">        <span class="diff-icon">⏱️</span>        <span class="diff-text">          <span class="diff-label">Lead Time</span>          <b>5 Days</b> — fastest lead time available        </span>      </div>
-      <div class="diff-row accent-3">        <span class="diff-icon">✅</span>        <span class="diff-text">          <span class="diff-label">OTIF Rate</span>          <b>98%</b> — highest OTIF rate among all 6 vendors        </span>      </div>
-      <div class="diff-row accent-4">        <span class="diff-icon">🏆</span>        <span class="diff-text">          <span class="diff-label">Vendor Score</span>          <b>77</b> Overall — Fulfillment <b>78</b>, Productivity <b>82</b>, Compliance <b>75</b>        </span>      </div>
+      <div class="diff-row accent-1">        <span class="diff-text">          <span class="diff-label">Cost per Vendor</span>          <b>€173</b> — competitive across all 6 vendors        </span>      </div>
+      <div class="diff-row accent-2">        <span class="diff-text">          <span class="diff-label">Lead Time</span>          <b>5 Days</b> — fastest lead time available        </span>      </div>
+      <div class="diff-row accent-3">        <span class="diff-text">          <span class="diff-label">OTIF Rate</span>          <b>98%</b> — highest OTIF rate among all 6 vendors        </span>      </div>
+      <div class="diff-row accent-4">        <span class="diff-text">          <span class="diff-label">Vendor Score</span>          <b>77</b> Overall — Fulfillment <b>78</b>, Productivity <b>82</b>, Compliance <b>75</b>        </span>      </div>
     </div>
-    <div class="alt-row">      <span class="alt-icon">🔁</span>      <span class="alt-text">        <span class="alt-label">Alternative Consideration</span>        <span class="score-pill"><span class="chev">▶▶</span>Renishaw</span>        Overall Score <b>75</b> (Fulfillment <b>76</b>, Productivity <b>79</b>, Compliance <b>75</b>) ·        <b>€171</b> cost · <b>7 Days</b> lead time · <b>97%</b> OTIF —        close runner-up, but slightly higher cost, longer lead time and marginally lower OTIF than Schaeffler.      </span>    </div>
+    <div class="alt-row">      <span class="alt-text">        <span class="alt-label">Alternative Consideration</span>        <span class="score-pill">Renishaw</span>        Overall Score <b>75</b> (Fulfillment <b>76</b>, Productivity <b>79</b>, Compliance <b>75</b>) ·        <b>€171</b> cost · <b>7 Days</b> lead time · <b>97%</b> OTIF —        close runner-up, but slightly higher cost, longer lead time and marginally lower OTIF than Schaeffler.      </span>    </div>
   </div>
 </body></html>
