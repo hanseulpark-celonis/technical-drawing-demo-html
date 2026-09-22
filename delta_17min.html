@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delta Tab</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    background: transparent;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* ============================================================
+     .delta-tab — reusable delta badge
+     Copy this block + the markup snippet into any component.
+     Size it by setting font-size on the element (everything scales).
+     Variants: .is-bad (default, salmon) | .is-good (green) | .is-flat (grey)
+     ============================================================ */
+  .delta-tab {
+    display: inline-flex;
+    flex-direction: column;   /* stacks "77 min" above "vs. Match" */
+    align-items: center;
+    gap: 0.15em;
+    padding: 0.38em 0.72em;
+    border-radius: 0.55em;
+    font-size: 16px;          /* <- change this to resize the whole tab */
+    font-weight: 700;
+    line-height: 1.15;
+    white-space: nowrap;      /* keeps each line unbroken */
+    color: #12224A;
+    background: #F4AE99;
+    border: 1px solid rgba(18, 34, 74, 0.10);
+  }
+  .delta-tab .delta-value {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+  }
+  .delta-tab .caret {
+    flex: 0 0 auto;
+    width: 0;
+    height: 0;
+    border-left: 0.34em solid transparent;
+    border-right: 0.34em solid transparent;
+    border-bottom: 0.44em solid currentColor;   /* filled caret-up */
+  }
+  .delta-tab.is-down .caret {
+    border-bottom: 0;
+    border-top: 0.44em solid currentColor;      /* filled caret-down */
+  }
+  .delta-tab .delta-label { font-weight: 600; opacity: 0.85; }
+
+  .delta-tab.is-good { color: #12503A; background: #A9E3C6; }
+  .delta-tab.is-flat { color: #2B3242; background: #E2E6EE; }
+
+  /* ---- demo page only (not part of the component) ---- */
+  .demo { padding: 28px; display: flex; flex-direction: column; gap: 22px; }
+  .demo h2 { margin: 0; font-size: 13px; letter-spacing: 0.6px; text-transform: uppercase; color: #8890A2; }
+  .demo .strip { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .kpi-card {
+    display: flex; align-items: center; justify-content: space-between; gap: 18px;
+    width: 340px; padding: 14px 16px;
+    border: 1px solid #E2E8F0; border-radius: 10px; background: #fff;
+  }
+  .kpi-card .kpi-name { font-size: 15px; color: #4B5468; }
+  .kpi-card .kpi-value { font-size: 30px; font-weight: 400; color: #12224A; line-height: 1; margin-top: 4px; }
+</style>
+</head>
+<body>
+  <span class="delta-tab" style="font-size:12px"><i class="caret"></i>77 min
+    <span class="delta-label">vs. Match</span></span>
+</body>
+</html>

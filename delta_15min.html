@@ -23,17 +23,23 @@
      ============================================================ */
   .delta-tab {
     display: inline-flex;
+    flex-direction: column;   /* stacks "77 min" above "vs. Match" */
     align-items: center;
-    gap: 0.4em;
+    gap: 0.15em;
     padding: 0.38em 0.72em;
     border-radius: 0.55em;
     font-size: 16px;          /* <- change this to resize the whole tab */
     font-weight: 700;
     line-height: 1.15;
-    white-space: nowrap;      /* keeps "77 min vs. Match" on one line */
+    white-space: nowrap;      /* keeps each line unbroken */
     color: #12224A;
     background: #F4AE99;
     border: 1px solid rgba(18, 34, 74, 0.10);
+  }
+  .delta-tab .delta-value {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
   }
   .delta-tab .caret {
     flex: 0 0 auto;
@@ -66,6 +72,7 @@
 </style>
 </head>
 <body>
-  <span class="delta-tab" style="font-size:12px"><i class="caret"></i>77 min <span class="delta-label">vs. Match</span></span>
+  <span class="delta-tab" style="font-size:12px"><i class="caret"></i>15 min
+    <span class="delta-label">vs. Match</span></span>
 </body>
 </html>
