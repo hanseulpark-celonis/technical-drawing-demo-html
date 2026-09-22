@@ -15,25 +15,56 @@
   .ai-intro {    font-size: 25px;    line-height: 1.5;    color: #4B5468;    margin: 0 0 13px;    max-width: 1300px;  }
   .mat {    font-weight: 700;    color: #1E2536;    white-space: nowrap;  }
   .score-pill {    display: inline-block;    padding: 3px 13px;    margin: 0 1px;    font-weight: 700;    font-size: 20px;    color: #FFFFFF;    border-radius: 999px;    white-space: nowrap;    background: linear-gradient(90deg, #5B6BD6 0%, #4C5BC0 100%);    box-shadow: 0 0 8px -1px rgba(91, 107, 214, 0.35);  }
-  .diff-grid {    display: flex;    gap: 16px;    margin-bottom: 16px;  }
-  .diff-row {    flex: 1;    display: block;    padding: 13px 18px;    border-radius: 0;    background: rgba(255, 255, 255, 0.65);    border: 1px solid rgba(120, 130, 160, 0.16);    border-left-width: 5px;  }
-  .diff-row.accent-1 { border-left-color: #D9598C; }
-  .diff-row.accent-2 { border-left-color: #C99A2E; }
-  .diff-row.accent-3 { border-left-color: #4A90D9; }
-  .diff-text {    display: block;    font-size: 20px;    line-height: 1.45;    color: #4B5468;  }
-  .diff-label {    display: block;    font-size: 20px;    font-weight: 700;    letter-spacing: 0.5px;    text-transform: uppercase;    color: #8890A2;    margin-bottom: 3px;  }
-  .diff-text b { color: #1E2536; font-weight: 700; }
+
+  /* ---- generic attribute comparison ---- */
+  .cmp { margin-bottom: 14px; }
+  .cmp-head {    display: flex;    gap: 16px;    padding: 0 16px 5px 21px;  }
+  .cmp-head .c-attr,  .cmp-head .c-val,  .cmp-head .c-delta {    font-size: 15px;    font-weight: 700;    letter-spacing: 0.6px;    text-transform: uppercase;    color: #8890A2;  }
+  .cmp-head .c-val.is-new::before { content: none; }
+  .rows { display: flex; flex-direction: column; gap: 4px; }
+  .row {    display: flex;    gap: 16px;    align-items: center;    padding: 9px 16px;    background: rgba(255, 255, 255, 0.65);    border: 1px solid rgba(120, 130, 160, 0.16);    border-left-width: 5px;    border-left-color: #8890A2;  }
+  .row.accent-1 { border-left-color: #D9598C; }
+  .row.accent-2 { border-left-color: #C99A2E; }
+  .c-attr {    flex: 1.25 1 0;    font-size: 20px;    font-weight: 700;    color: #1E2536;  }
+  .c-val {    flex: 1 1 0;    font-size: 20px;    line-height: 1.3;    color: #4B5468;  }
+  .c-val.is-new { color: #1E2536; font-weight: 700; }
+  .c-val.is-new::before {    content: "\2192";    margin-right: 10px;    font-weight: 400;    color: #A6AEBF;  }
+  .c-delta { flex: 0 0 150px; text-align: right; }
+  .cmp-foot {    display: flex;    align-items: center;    gap: 12px;    padding: 8px 16px 0 21px;    font-size: 18px;    color: #6B7488;  }
+  .cmp-foot b { color: #1E2536; font-weight: 700; }
+  .badge {    display: inline-block;    padding: 2px 11px;    font-size: 16px;    font-weight: 700;    white-space: nowrap;    border-radius: 999px;  }
+  .badge.diff {    color: #4C5BC0;    background: rgba(91, 107, 214, 0.10);    border: 1px solid rgba(91, 107, 214, 0.28);  }
+  .badge.same {    color: #1F8A5C;    background: rgba(31, 138, 92, 0.08);    border: 1px solid rgba(31, 138, 92, 0.30);  }
   .insight-box {    display: block;    padding: 14px 18px;    border-radius: 0;    background: rgba(255, 255, 255, 0.55);    border: 1px solid rgba(120, 130, 160, 0.16);    border-left-width: 5px;    border-left-color: #5B6BD6;  }
   .insight-text { display: block; font-size: 20px; line-height: 1.5; color: #4B5468; }
-  .insight-text b { color: #1E2536; font-weight: 700; }</style></head><body>
+  .insight-text b { color: #1E2536; font-weight: 700; }
+  @media (max-width: 880px) {
+    .ai-card { padding: 18px 20px 20px 24px; }
+    .ai-title { font-size: 26px; }
+    .ai-intro { font-size: 20px; }
+    .cmp-head { display: none; }
+    .row { flex-direction: column; align-items: flex-start; gap: 3px; }
+    .c-attr, .c-val, .c-delta { flex: none; width: 100%; text-align: left; }
+    .c-val::before { content: attr(data-label) ": "; color: #8890A2; font-weight: 600; }
+    .c-val.is-new::before { content: "\2192  " attr(data-label) ": "; margin-right: 0; }
+    .c-delta { margin-top: 4px; }
+    .cmp-foot { flex-direction: column; align-items: flex-start; gap: 5px; padding-left: 16px; font-size: 17px; }
+  }</style></head><body>
   <div class="ai-card">
     <div class="ai-header">      <span class="title-accent"></span>      <b class="ai-title">AI Summary</b>      <span class="generated-badge"><span class="dot"></span>AI Generated</span>    </div>
     <p class="ai-intro">      The AI matched new part <span class="mat">99182736</span> to existing material <span class="mat">10025866</span> with a      <span class="score-pill">88.7%</span> similarity score.    </p>
-    <div class="diff-grid">
-      <div class="diff-row accent-1">        <span class="diff-text">          <span class="diff-label">Geometry</span>          Significantly longer (<b>185 mm</b> vs. <b>49 mm</b>) and thicker (<b>Ø38 mm</b> vs. <b>Ø25 mm</b>)        </span>      </div>
-      <div class="diff-row accent-2">        <span class="diff-text">          <span class="diff-label">Drill Holes</span>          <b>2 drill holes</b> added (vs. <b>0</b> on the reference part)        </span>      </div>
-      <div class="diff-row accent-3">        <span class="diff-text">          <span class="diff-label">Threads</span>          Fewer threads (<b>4</b> vs. <b>8</b>)        </span>      </div>
+    <br>
+    <div class="cmp">
+      <div class="cmp-head">        <span class="c-attr">Key differences</span>        <span class="c-val">Reference &middot; 10025866</span>        <span class="c-val is-new">New part &middot; 99182736</span>        <span class="c-delta">Delta</span>      </div>
+      <div class="rows">
+        <div class="row accent-1">          <span class="c-attr">Overall length</span>          <span class="c-val" data-label="10025866">49 mm</span>          <span class="c-val is-new" data-label="99182736">185 mm</span>          <span class="c-delta"><span class="badge diff">+136 mm</span></span>        </div>
+        <div class="row accent-1">          <span class="c-attr">Outer diameter</span>          <span class="c-val" data-label="10025866">&Oslash;25 mm</span>          <span class="c-val is-new" data-label="99182736">&Oslash;38 mm</span>          <span class="c-delta"><span class="badge diff">+13 mm</span></span>        </div>
+        <div class="row accent-2">          <span class="c-attr">Machined features</span>          <span class="c-val" data-label="10025866">0 holes, 8 threads</span>          <span class="c-val is-new" data-label="99182736">2 holes, 4 threads</span>          <span class="c-delta"><span class="badge diff">+2 / &minus;4</span></span>        </div>
+      </div>
+      <br>
+      <div class="cmp-foot">        <span class="badge same">4 attributes identical</span>        <span>Material grade, surface finish, tolerance class and process family are unchanged.</span>      </div>
     </div>
-    <div class="insight-box">      <span class="insight-text">Because the core geometry and manufacturing process are close enough, existing <b>cost, routing and machine data</b> from <b>10025866</b> can be reused as a reliable starting point — instead of starting the estimation from scratch.</span>    </div>
+    <br>
+    <div class="insight-box">      <span class="insight-text">Because the core geometry and manufacturing process are close enough, existing <b>cost, routing and machine data</b> from <b>10025866</b> can be reused as a reliable starting point &mdash; instead of starting the estimation from scratch.</span>    </div>
   </div>
 </body></html>
