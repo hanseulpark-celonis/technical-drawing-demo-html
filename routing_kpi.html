@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Production Routing KPIs</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    :root {
+      /* Fluid type — every size scales with the viewport so the KPIs stay
+         legible and never clip, at any embed width. */
+      --title-font:  clamp(15px, 1.24vw, 26px);
+      --sub-font:    clamp(11px, 0.88vw, 18px);
+      --label-font:  clamp(11px, 0.86vw, 18px);
+      --value-font:  clamp(13px, 1.72vw, 40px);
+      --delta-font:  clamp(8px,  0.72vw, 17px);
+
+      --gutter: 6px;       /* half the white channel between the two panels */
+      --delta-inset: 10px; /* gap between each delta pill and its box's right edge */
+
+      --ink:        #12224A;
+      --ink-strong: #1E2536;
+      --ink-muted:  #4B5468;
+      --ink-faint:  #8890A2;
+      --hairline:   #E2E8F0;
+    }
+
+    body {
+      background: transparent;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    /* ============================================================
+       Layout — two panels, each exactly 50% of the strip.
+       The white channel between them comes from panel margins INSIDE
+       each 50% cell, so the halves stay exactly equal.
+       ============================================================ */
+    .routing-strip {
+      display: grid;
+      grid-template-columns: 1fr 1fr;   /* exact halves, no gap to steal width */
+      gap: 0;
+      width: 100%;
+      background: #FFFFFF;
+    }
+
+    .routing-panel {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 12px 14px 14px;
+      background: #FFFFFF;
+      border: 1px solid var(--hairline);
+    }
+
+    .routing-panel:first-child { margin-right: var(--gutter); }
+    .routing-panel:last-child  { margin-left:  var(--gutter); }
+
+    .panel-head { min-width: 0; }
+
+    .panel-title {
+      display: block;
+      font-size: var(--title-font);
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      color: var(--ink-strong);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .panel-sub {
+      display: block;
+      margin-top: 3px;
+      font-size: var(--sub-font);
+      font-weight: 400;
+      color: var(--ink-faint);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .panel-sub .mat { font-weight: 700; color: var(--ink-muted); }
+
+    /* ============================================================
+       .kpi-row / .kpi — equal-width KPI boxes (1fr each) so every box
+       in a panel is identical, and both panels' rows line up.
+       ============================================================ */
+    .kpi-row {
+      flex: 1 1 auto;
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 1fr;   /* identical width for every box in the row */
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .kpi {
+      min-width: 0;
+      container-type: inline-size;   /* lets the delta adapt to its own box */
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 9px var(--delta-inset) 10px 12px;
+      background: #FFFFFF;
+      border: 1px solid var(--hairline);
+      border-radius: 4px;
+    }
+
+    .kpi-name {
+      font-size: var(--label-font);
+      line-height: 1.2;
+      color: var(--ink-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* The value and its delta share one row — the delta reads as an
+       annotation on the number, not on the label. */
+    .kpi-figure {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      min-width: 0;
+    }
+
+    .kpi-value {
+      font-size: var(--value-font);
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: -0.3px;
+      color: var(--ink);
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ============================================================
+       .delta-tab — delta annotation. Single-line pill: trend arrow + value,
+       hairline divider, then the comparison basis.
+       Size it with --delta-font; all internals are em-based.
+       Variants: default (regression) | .is-good | .is-flat
+                 .is-down flips the arrow to a falling trend
+       ============================================================ */
+    .delta-tab {
+      flex: 0 0 auto;
+      margin-left: auto;   /* pin to the box's right edge — identical inset
+                              in every KPI, regardless of value width */
+      display: inline-flex;
+      align-items: center;
+      gap: 0.42em;
+      padding: 0.36em 0.62em;
+      border-radius: 4px;
+      font-size: var(--delta-font);
+      line-height: 1;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+      color: #9E3F1D;
+      background: #FDEFE8;
+      border: 1px solid #F1C3AE;
+    }
+
+    /* Trend arrow — a rising polyline with an arrowhead, not a triangle.
+       Scales with the pill's font-size and inherits its color. */
+    .delta-tab .trend {
+      flex: 0 0 auto;
+      width: 1.3em;
+      height: 1.3em;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      overflow: visible;
+    }
+
+    .delta-tab.is-down .trend { transform: scaleY(-1); }   /* falling trend */
+
+    .delta-tab .delta-value {
+      font-weight: 700;
+      letter-spacing: 0.1px;
+    }
+
+    .delta-tab .delta-label {
+      padding-left: 0.52em;
+      border-left: 1px solid currentColor;
+      font-size: 0.86em;
+      font-weight: 500;
+      opacity: 0.68;
+    }
+
+    .delta-tab.is-good { color: #1B6B4A; background: #E8F6EF; border-color: #B6DFC9; }
+    .delta-tab.is-flat { color: #4B5468; background: #F2F4F8; border-color: #DCE1EA; }
+
+    /* In a tight box, drop the comparison basis rather than let the pill
+       push the value out — the panel titles already establish vs. Match. */
+    @container (max-width: 275px) {
+      .delta-tab .delta-label { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="routing-strip">
+
+    <!-- ===== Target Material (Proposed) ===== -->
+    <div class="routing-panel">
+
+      <div class="panel-head">
+        <span class="panel-title">Target Material - Production Routing (Proposed)</span>
+        <span class="panel-sub"><span class="mat">99182736</span> &middot; Shaft Journal, Feed Drive, &Oslash;38h7, L=185mm</span>
+      </div>
+
+      <div class="kpi-row">
+
+        <div class="kpi">
+          <span class="kpi-name">Operations (Ref)</span>
+          <div class="kpi-figure">
+            <span class="kpi-value">9</span>
+            <span class="delta-tab">
+              <svg class="trend" viewBox="0 0 24 24" aria-hidden="true">
+                <polyline points="2 17 8.5 10.5 13.5 15.5 22 7"></polyline>
+                <polyline points="16 7 22 7 22 13"></polyline>
+              </svg>
+              <span class="delta-value">1 op</span>
+              <span class="delta-label">vs. Match</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="kpi">
+          <span class="kpi-name">Cycle Time (Ref)</span>
+          <div class="kpi-figure">
+            <span class="kpi-value">166 min</span>
+            <span class="delta-tab">
+              <svg class="trend" viewBox="0 0 24 24" aria-hidden="true">
+                <polyline points="2 17 8.5 10.5 13.5 15.5 22 7"></polyline>
+                <polyline points="16 7 22 7 22 13"></polyline>
+              </svg>
+              <span class="delta-value">71 min</span>
+              <span class="delta-label">vs. Match</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="kpi">
+          <span class="kpi-name">Setup Time (Ref)</span>
+          <div class="kpi-figure">
+            <span class="kpi-value">85 min</span>
+            <span class="delta-tab">
+              <svg class="trend" viewBox="0 0 24 24" aria-hidden="true">
+                <polyline points="2 17 8.5 10.5 13.5 15.5 22 7"></polyline>
+                <polyline points="16 7 22 7 22 13"></polyline>
+              </svg>
+              <span class="delta-value">15 min</span>
+              <span class="delta-label">vs. Match</span>
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ===== Selected Material Match ===== -->
+    <div class="routing-panel">
+
+      <div class="panel-head">
+        <span class="panel-title">Selected Material Match - Production Routing</span>
+        <span class="panel-sub"><span class="mat">10025866</span> &middot; Shaft Journal, Feed Drive, &Oslash;25h8, L=49mm</span>
+      </div>
+
+      <div class="kpi-row">
+
+        <div class="kpi">
+          <span class="kpi-name">Operations (Ref)</span>
+          <div class="kpi-figure"><span class="kpi-value">8</span></div>
+        </div>
+
+        <div class="kpi">
+          <span class="kpi-name">Cycle Time (Ref)</span>
+          <div class="kpi-figure"><span class="kpi-value">95 min</span></div>
+        </div>
+
+        <div class="kpi">
+          <span class="kpi-name">Setup Time (Ref)</span>
+          <div class="kpi-figure"><span class="kpi-value">70 min</span></div>
+        </div>
+
+        <div class="kpi">
+          <span class="kpi-name">Scrap Rate</span>
+          <div class="kpi-figure"><span class="kpi-value">6,5 %</span></div>
+        </div>
+
+        <div class="kpi">
+          <span class="kpi-name">Lead Time</span>
+          <div class="kpi-figure"><span class="kpi-value">6 days</span></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
